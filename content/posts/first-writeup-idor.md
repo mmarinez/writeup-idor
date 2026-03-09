@@ -1,6 +1,6 @@
 +++
 date = '2026-03-08T20:18:51-04:00'
-draft = true
+draft = false
 title = 'QA first steps into webpentest (OWASP Top 10 - A01 Access Control)'
 +++
 
