@@ -4,7 +4,7 @@ draft = false
 title = 'QA first steps into webpentest (OWASP Top 10 - A01 Access Control)'
 +++
 
-After almost 10 years working a QA Engineer, testing web and mobile apps I decided to explore cybersecurity. Welcome to my first write up, this is a document of how I found my first Access Control vulnerability using OWASP Juice Shop and Burp Suite.
+After almost 10 years working as a QA Engineer, testing web and mobile apps I decided to explore cybersecurity. Welcome to my first write up, this is a document of how I found my first Access Control vulnerability using OWASP Juice Shop and Burp Suite.
 
 ## Juicebox Setup
 
